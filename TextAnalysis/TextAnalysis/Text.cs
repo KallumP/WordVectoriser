@@ -7,7 +7,7 @@ namespace TextAnalysis {
 
         public string baseText { get; }
 
-        static List<Vector> vectors { get; } = new List<Vector>();
+        static List<Vector> vectors = new List<Vector>();
 
 
         List<int> vectorisedText;

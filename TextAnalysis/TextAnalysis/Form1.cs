@@ -11,29 +11,38 @@ using System.Windows.Forms;
 namespace TextAnalysis {
     public partial class Form1 : Form {
 
-        Text input;
+        List<Text> texts;
+        int currentTextToShow;
 
         public Form1() {
             InitializeComponent();
+
+            texts = new List<Text>();
+
+
         }
 
         private void button2_Click(object sender, EventArgs e) {
-            input = new Text(inputText.Text);
 
-            baseText.Text = input.baseText;
+            //adds the text from the textbos into the list of all texts
+            texts.Add(new Text(inputText.Text));
 
-            input.vectorise();
+            //vectorises the new text
+            texts[texts.Count - 1].vectorise();
 
-            vectorisedText.Text = input.outputVectorised();
+            currentTextToShow = texts.Count - 1;
 
-            outputAllVectors();
+            prevText.Enabled = true;
+            nextText.Enabled = true;
+            inputText.Text = "";
 
+            ShowText();
         }
 
 
         void outputAllVectors() {
 
-            List<Vector> vectors = input.GetVectors();
+            List<Vector> vectors = texts[currentTextToShow].GetVectors();
 
             allVectors.Items.Clear();
 
@@ -44,7 +53,36 @@ namespace TextAnalysis {
             }
         }
 
-        private void baseText_Click(object sender, EventArgs e) {
+        private void prevText_Click(object sender, EventArgs e) {
+
+            if (currentTextToShow > 0)
+                currentTextToShow--;
+
+            ShowText();
+
+        }
+
+        private void nextText_Click(object sender, EventArgs e) {
+
+            if (currentTextToShow < texts.Count - 1)
+                currentTextToShow++;
+
+            ShowText();
+        }
+
+        void ShowText() {
+
+            //updates the label showing the base text
+            baseText.Text = texts[currentTextToShow].baseText;
+
+
+            //updates the label showing the vectorised text
+            vectorisedText.Text = texts[currentTextToShow].outputVectorised();
+
+            //shows all vectors
+            outputAllVectors();
+
+            showingText.Text = "Showing text " + (currentTextToShow + 1) + ", out of " + texts.Count;
 
         }
     }

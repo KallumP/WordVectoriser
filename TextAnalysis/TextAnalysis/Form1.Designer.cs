@@ -32,6 +32,9 @@ namespace TextAnalysis {
             this.allVectors = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.prevText = new System.Windows.Forms.Button();
+            this.nextText = new System.Windows.Forms.Button();
+            this.showingText = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button2
@@ -48,13 +51,13 @@ namespace TextAnalysis {
             // 
             this.inputText.Location = new System.Drawing.Point(176, 12);
             this.inputText.Name = "inputText";
-            this.inputText.Size = new System.Drawing.Size(612, 23);
+            this.inputText.Size = new System.Drawing.Size(209, 23);
             this.inputText.TabIndex = 4;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 42);
+            this.label1.Location = new System.Drawing.Point(13, 50);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(54, 15);
             this.label1.TabIndex = 5;
@@ -68,7 +71,6 @@ namespace TextAnalysis {
             this.baseText.Size = new System.Drawing.Size(776, 140);
             this.baseText.TabIndex = 6;
             this.baseText.Text = "label2";
-            this.baseText.Click += new System.EventHandler(this.baseText_Click);
             // 
             // vectorisedText
             // 
@@ -91,7 +93,7 @@ namespace TextAnalysis {
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 221);
+            this.label2.Location = new System.Drawing.Point(13, 232);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(62, 15);
             this.label2.TabIndex = 9;
@@ -100,17 +102,51 @@ namespace TextAnalysis {
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(176, 221);
+            this.label3.Location = new System.Drawing.Point(176, 232);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(84, 15);
             this.label3.TabIndex = 10;
             this.label3.Text = "Vectorised text";
+            // 
+            // prevText
+            // 
+            this.prevText.Enabled = false;
+            this.prevText.Location = new System.Drawing.Point(454, 11);
+            this.prevText.Name = "prevText";
+            this.prevText.Size = new System.Drawing.Size(75, 23);
+            this.prevText.TabIndex = 11;
+            this.prevText.Text = "Prev Text";
+            this.prevText.UseVisualStyleBackColor = true;
+            this.prevText.Click += new System.EventHandler(this.prevText_Click);
+            // 
+            // nextText
+            // 
+            this.nextText.Enabled = false;
+            this.nextText.Location = new System.Drawing.Point(535, 11);
+            this.nextText.Name = "nextText";
+            this.nextText.Size = new System.Drawing.Size(75, 23);
+            this.nextText.TabIndex = 12;
+            this.nextText.Text = "Next Text";
+            this.nextText.UseVisualStyleBackColor = true;
+            this.nextText.Click += new System.EventHandler(this.nextText_Click);
+            // 
+            // showingText
+            // 
+            this.showingText.AutoSize = true;
+            this.showingText.Location = new System.Drawing.Point(616, 12);
+            this.showingText.Name = "showingText";
+            this.showingText.Size = new System.Drawing.Size(96, 15);
+            this.showingText.TabIndex = 13;
+            this.showingText.Text = "No texts to show";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 770);
+            this.Controls.Add(this.showingText);
+            this.Controls.Add(this.nextText);
+            this.Controls.Add(this.prevText);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.allVectors);
@@ -135,6 +171,9 @@ namespace TextAnalysis {
         private System.Windows.Forms.ListBox allVectors;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button prevText;
+        private System.Windows.Forms.Button nextText;
+        private System.Windows.Forms.Label showingText;
     }
 }
 
