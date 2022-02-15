@@ -5,32 +5,61 @@ using System.Text;
 namespace TextAnalysis {
     public class Text {
 
-        public string baseText { get; }
-
         static List<Vector> vectors = new List<Vector>();
 
+        public string baseText { get; }
 
+        public string normalisedText { get; set; }
         List<int> vectorisedText;
 
         public Text(string input) {
 
             baseText = input;
+            NormaliseText();
 
         }
 
 
-        public void vectorise() {
+        public void NormaliseText() {
+
+            string lowerCaseText = baseText.ToLower();
+            normalisedText = "";
+
+            //loops through all the characters in the normalised text
+            for (int i = lowerCaseText.Length - 1; i >= 0; i--) {
+
+                string current = lowerCaseText[i].ToString();
+
+                Console.WriteLine("Currently looking at character: " + current);
+
+                //cehcks if this is not a letter or a number or a full stop or a space or an apostrophe
+                if (lowerCaseText[i] >= 97 && lowerCaseText[i] <= 122 || lowerCaseText[i] >= 48 && lowerCaseText[i] <= 57 || lowerCaseText[i] == 46 || lowerCaseText[i] == 32 || lowerCaseText[i] == 39) {
+
+                    if (lowerCaseText[i] == 46)
+                        current = " " + current;
+
+                    Console.WriteLine("Adding: " + current);
+                    normalisedText = current + normalisedText;
+                    Console.WriteLine("Normalised text: " + normalisedText);
+
+                }
+            }
+        }
+
+        public void Vectorise() {
+
+            string textToVectorise = normalisedText;
 
             vectorisedText = new List<int>();
 
             //splits the text into an arry of all words;
-            string[] splitText = baseText.Split(' ');
+            string[] splitText = textToVectorise.Split(' ');
 
             //loops through all the words from the input
             for (int i = 0; i < splitText.Length; i++) {
 
                 //gets the index of the current word
-                int index = inList(splitText[i]);
+                int index = InList(splitText[i]);
 
                 //if the index was not found
                 if (index == -1) {
@@ -43,14 +72,12 @@ namespace TextAnalysis {
 
                 }
 
-
                 //saves the vector in the vectorised text
                 vectorisedText.Add(vectors[index].token);
-
             }
         }
 
-        public int inList(string toCheck) {
+        int InList(string toCheck) {
 
             for (int i = 0; i < vectors.Count; i++)
 
@@ -61,23 +88,20 @@ namespace TextAnalysis {
             return -1;
         }
 
-        public string outputVectorised() {
+        public string OutputVectorised() {
 
             string toOut = "";
 
-            foreach (int i in vectorisedText) {
-
+            foreach (int i in vectorisedText)
                 toOut += i + ",";
 
-            }
-
             return toOut;
-
         }
 
         public List<Vector> GetVectors() {
             return vectors;
         }
+
 
 
     }

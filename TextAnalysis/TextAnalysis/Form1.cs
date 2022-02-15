@@ -24,11 +24,11 @@ namespace TextAnalysis {
 
         private void button2_Click(object sender, EventArgs e) {
 
-            //adds the text from the textbos into the list of all texts
+            //adds the text from the textbox into the list of all texts
             texts.Add(new Text(inputText.Text));
 
             //vectorises the new text
-            texts[texts.Count - 1].vectorise();
+            texts[texts.Count - 1].Vectorise();
 
             currentTextToShow = texts.Count - 1;
 
@@ -73,11 +73,11 @@ namespace TextAnalysis {
         void ShowText() {
 
             //updates the label showing the base text
-            baseText.Text = texts[currentTextToShow].baseText;
+            baseText.Text = texts[currentTextToShow].normalisedText;
 
 
             //updates the label showing the vectorised text
-            vectorisedText.Text = texts[currentTextToShow].outputVectorised();
+            vectorisedText.Text = texts[currentTextToShow].OutputVectorised();
 
             //shows all vectors
             outputAllVectors();
