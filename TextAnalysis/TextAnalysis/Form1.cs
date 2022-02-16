@@ -36,6 +36,10 @@ namespace TextAnalysis {
             nextText.Enabled = true;
             inputText.Text = "";
 
+            moveBagL.Enabled = true;
+            moveBagR.Enabled = true;
+            UpdateWindowPositionLabel(-1);
+
             ShowText();
         }
 
@@ -85,8 +89,35 @@ namespace TextAnalysis {
             showingText.Text = "Showing text " + (currentTextToShow + 1) + ", out of " + texts.Count;
 
         }
+
+        void UpdateWindowPositionLabel(int vectorisedTextIndex) {
+
+            if (vectorisedTextIndex != -1) {
+
+                int vectorsIndex = texts[currentTextToShow].vectorisedText[vectorisedTextIndex];
+                int currentBagVectorToken = texts[currentTextToShow].GetVectors()[vectorsIndex].token;
+
+                currentBagPos.Text = "Current bag position: " + vectorisedTextIndex + " Bag word = " + texts[currentTextToShow].VectorTokenToString(currentBagVectorToken);
+            }
+
+        }
+
+        void UpdateBagLabel() {
+            bagContent_lbl.Text = texts[currentTextToShow].GetBagVectors();
+        }
+
+        private void moveWindowL_Click(object sender, EventArgs e) {
+
+            texts[currentTextToShow].UpdateBagPosition(-1);
+            UpdateWindowPositionLabel(texts[currentTextToShow].bagPosition);
+            UpdateBagLabel();
+        }
+
+        private void moveWindowR_Click(object sender, EventArgs e) {
+
+            texts[currentTextToShow].UpdateBagPosition(1);
+            UpdateWindowPositionLabel(texts[currentTextToShow].bagPosition);
+            UpdateBagLabel();
+        }
     }
-
-
-
 }

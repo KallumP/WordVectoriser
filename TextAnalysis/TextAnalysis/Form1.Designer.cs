@@ -35,6 +35,10 @@ namespace TextAnalysis {
             this.prevText = new System.Windows.Forms.Button();
             this.nextText = new System.Windows.Forms.Button();
             this.showingText = new System.Windows.Forms.Label();
+            this.moveBagR = new System.Windows.Forms.Button();
+            this.moveBagL = new System.Windows.Forms.Button();
+            this.bagContent_lbl = new System.Windows.Forms.Label();
+            this.currentBagPos = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button2
@@ -77,7 +81,7 @@ namespace TextAnalysis {
             this.vectorisedText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.vectorisedText.Location = new System.Drawing.Point(176, 249);
             this.vectorisedText.Name = "vectorisedText";
-            this.vectorisedText.Size = new System.Drawing.Size(612, 499);
+            this.vectorisedText.Size = new System.Drawing.Size(612, 162);
             this.vectorisedText.TabIndex = 7;
             this.vectorisedText.Text = "label2";
             // 
@@ -139,11 +143,55 @@ namespace TextAnalysis {
             this.showingText.TabIndex = 13;
             this.showingText.Text = "No texts to show";
             // 
+            // moveWindowR
+            // 
+            this.moveBagR.Enabled = false;
+            this.moveBagR.Location = new System.Drawing.Point(317, 429);
+            this.moveBagR.Name = "moveWindowR";
+            this.moveBagR.Size = new System.Drawing.Size(135, 23);
+            this.moveBagR.TabIndex = 15;
+            this.moveBagR.Text = "Move window right";
+            this.moveBagR.UseVisualStyleBackColor = true;
+            this.moveBagR.Click += new System.EventHandler(this.moveWindowR_Click);
+            // 
+            // moveWindowL
+            // 
+            this.moveBagL.Enabled = false;
+            this.moveBagL.Location = new System.Drawing.Point(176, 429);
+            this.moveBagL.Name = "moveWindowL";
+            this.moveBagL.Size = new System.Drawing.Size(135, 23);
+            this.moveBagL.TabIndex = 14;
+            this.moveBagL.Text = "Move window left";
+            this.moveBagL.UseVisualStyleBackColor = true;
+            this.moveBagL.Click += new System.EventHandler(this.moveWindowL_Click);
+            // 
+            // bagContent_lbl
+            // 
+            this.bagContent_lbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.bagContent_lbl.Location = new System.Drawing.Point(176, 455);
+            this.bagContent_lbl.Name = "bagContent_lbl";
+            this.bagContent_lbl.Size = new System.Drawing.Size(612, 162);
+            this.bagContent_lbl.TabIndex = 16;
+            this.bagContent_lbl.Text = "label2";
+            // 
+            // currentBagPos
+            // 
+            this.currentBagPos.AutoSize = true;
+            this.currentBagPos.Location = new System.Drawing.Point(458, 433);
+            this.currentBagPos.Name = "currentBagPos";
+            this.currentBagPos.Size = new System.Drawing.Size(38, 15);
+            this.currentBagPos.TabIndex = 17;
+            this.currentBagPos.Text = "label4";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 770);
+            this.Controls.Add(this.currentBagPos);
+            this.Controls.Add(this.bagContent_lbl);
+            this.Controls.Add(this.moveBagR);
+            this.Controls.Add(this.moveBagL);
             this.Controls.Add(this.showingText);
             this.Controls.Add(this.nextText);
             this.Controls.Add(this.prevText);
@@ -174,6 +222,10 @@ namespace TextAnalysis {
         private System.Windows.Forms.Button prevText;
         private System.Windows.Forms.Button nextText;
         private System.Windows.Forms.Label showingText;
+        private System.Windows.Forms.Button moveBagR;
+        private System.Windows.Forms.Button moveBagL;
+        private System.Windows.Forms.Label bagContent_lbl;
+        private System.Windows.Forms.Label currentBagPos;
     }
 }
 
