@@ -22,13 +22,14 @@ namespace TextAnalysis {
 
         }
 
-        private void button2_Click(object sender, EventArgs e) {
+        private void processText_btn_Click(object sender, EventArgs e) {
 
             //adds the text from the textbox into the list of all texts
             texts.Add(new Text(inputText.Text));
 
             //vectorises the new text
             texts[texts.Count - 1].Vectorise();
+            texts[texts.Count - 1].GenerateDefinitions();
 
             currentTextToShow = texts.Count - 1;
 
@@ -36,25 +37,21 @@ namespace TextAnalysis {
             nextText.Enabled = true;
             inputText.Text = "";
 
-            moveBagL.Enabled = true;
-            moveBagR.Enabled = true;
-            UpdateWindowPositionLabel(-1);
-
             ShowText();
+            ShowAllDefinitions();
         }
 
 
-        void outputAllVectors() {
+        void OutputAllVectors() {
 
-            List<Vector> vectors = texts[currentTextToShow].GetVectors();
+            List<Vector> vectors = TextAnalysis.Text.vectors;
 
             allVectors.Items.Clear();
 
-            foreach (Vector vector in vectors) {
-
+            foreach (Vector vector in vectors)
 
                 allVectors.Items.Add(vector.token + ": " + vector.word);
-            }
+
         }
 
         private void prevText_Click(object sender, EventArgs e) {
@@ -84,40 +81,53 @@ namespace TextAnalysis {
             vectorisedText.Text = texts[currentTextToShow].OutputVectorised();
 
             //shows all vectors
-            outputAllVectors();
+            OutputAllVectors();
 
             showingText.Text = "Showing text " + (currentTextToShow + 1) + ", out of " + texts.Count;
 
         }
 
-        void UpdateWindowPositionLabel(int vectorisedTextIndex) {
+        void ShowAllDefinitions() {
 
-            if (vectorisedTextIndex != -1) {
+            allDefinitions.Items.Clear();  
 
-                int vectorsIndex = texts[currentTextToShow].vectorisedText[vectorisedTextIndex];
-                int currentBagVectorToken = texts[currentTextToShow].GetVectors()[vectorsIndex].token;
+            List<int> outputtedVectors = new List<int>();
 
-                currentBagPos.Text = "Current bag position: " + vectorisedTextIndex + " Bag word = " + texts[currentTextToShow].VectorTokenToString(currentBagVectorToken);
+            //loops through all the vectors in the vectorised text
+            for (int i = 0; i < texts[currentTextToShow].vectorisedText.Count; i++) {
+
+                int currentVector = texts[currentTextToShow].vectorisedText[i];
+
+                //only outputs this vectors definitions if it hasn't already been outputted
+                if (!outputtedVectors.Contains(currentVector)) {
+
+                    //loops through all the definitions for this vector
+                    for (int j = 0; j < TextAnalysis.Text.vectors[TextAnalysis.Text.TokenInVectorsList(currentVector)].relatedVectors.Count(); j++) {
+
+                        string toAdd = "";
+
+                        int currentVectorToken = TextAnalysis.Text.TokenInVectorsList(currentVector);
+                        string currentVectorWord = TextAnalysis.Text.vectors[currentVectorToken].word;
+
+                        toAdd += "Current Vector: (" + currentVectorToken + ")" + currentVectorWord + ". Definition: " + j + ". Related vectors: ";
+
+                        //loops through all the vectors in this definition for this vector
+                        for (int k = 0; k < TextAnalysis.Text.vectors[TextAnalysis.Text.TokenInVectorsList(currentVector)].relatedVectors[j].Count(); k++) {
+
+                            int definitionToken = TextAnalysis.Text.vectors[TextAnalysis.Text.TokenInVectorsList(currentVector)].relatedVectors[j][k];
+                            string definitionString = TextAnalysis.Text.vectors[definitionToken].word;
+
+                            toAdd += "( " + definitionToken + ")" + definitionString + ", ";
+                        }
+
+                        allDefinitions.Items.Add(toAdd);
+                    }
+
+                    outputtedVectors.Add(currentVector);
+                }
+
             }
 
-        }
-
-        void UpdateBagLabel() {
-            bagContent_lbl.Text = texts[currentTextToShow].GetBagVectors();
-        }
-
-        private void moveWindowL_Click(object sender, EventArgs e) {
-
-            texts[currentTextToShow].UpdateBagPosition(-1);
-            UpdateWindowPositionLabel(texts[currentTextToShow].bagPosition);
-            UpdateBagLabel();
-        }
-
-        private void moveWindowR_Click(object sender, EventArgs e) {
-
-            texts[currentTextToShow].UpdateBagPosition(1);
-            UpdateWindowPositionLabel(texts[currentTextToShow].bagPosition);
-            UpdateBagLabel();
         }
     }
 }

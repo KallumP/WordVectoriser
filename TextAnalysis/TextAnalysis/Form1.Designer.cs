@@ -24,7 +24,7 @@ namespace TextAnalysis {
         ///  the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.button2 = new System.Windows.Forms.Button();
+            this.processText_btn = new System.Windows.Forms.Button();
             this.inputText = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.baseText = new System.Windows.Forms.Label();
@@ -35,21 +35,18 @@ namespace TextAnalysis {
             this.prevText = new System.Windows.Forms.Button();
             this.nextText = new System.Windows.Forms.Button();
             this.showingText = new System.Windows.Forms.Label();
-            this.moveBagR = new System.Windows.Forms.Button();
-            this.moveBagL = new System.Windows.Forms.Button();
-            this.bagContent_lbl = new System.Windows.Forms.Label();
-            this.currentBagPos = new System.Windows.Forms.Label();
+            this.allDefinitions = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
-            // button2
+            // processText_btn
             // 
-            this.button2.Location = new System.Drawing.Point(12, 12);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(134, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Process text";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.processText_btn.Location = new System.Drawing.Point(12, 12);
+            this.processText_btn.Name = "processText_btn";
+            this.processText_btn.Size = new System.Drawing.Size(134, 23);
+            this.processText_btn.TabIndex = 3;
+            this.processText_btn.Text = "Process text";
+            this.processText_btn.UseVisualStyleBackColor = true;
+            this.processText_btn.Click += new System.EventHandler(this.processText_btn_Click);
             // 
             // inputText
             // 
@@ -87,6 +84,8 @@ namespace TextAnalysis {
             // 
             // allVectors
             // 
+            this.allVectors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.allVectors.FormattingEnabled = true;
             this.allVectors.ItemHeight = 15;
             this.allVectors.Location = new System.Drawing.Point(13, 249);
@@ -143,55 +142,24 @@ namespace TextAnalysis {
             this.showingText.TabIndex = 13;
             this.showingText.Text = "No texts to show";
             // 
-            // moveWindowR
+            // allDefinitions
             // 
-            this.moveBagR.Enabled = false;
-            this.moveBagR.Location = new System.Drawing.Point(317, 429);
-            this.moveBagR.Name = "moveWindowR";
-            this.moveBagR.Size = new System.Drawing.Size(135, 23);
-            this.moveBagR.TabIndex = 15;
-            this.moveBagR.Text = "Move window right";
-            this.moveBagR.UseVisualStyleBackColor = true;
-            this.moveBagR.Click += new System.EventHandler(this.moveWindowR_Click);
-            // 
-            // moveWindowL
-            // 
-            this.moveBagL.Enabled = false;
-            this.moveBagL.Location = new System.Drawing.Point(176, 429);
-            this.moveBagL.Name = "moveWindowL";
-            this.moveBagL.Size = new System.Drawing.Size(135, 23);
-            this.moveBagL.TabIndex = 14;
-            this.moveBagL.Text = "Move window left";
-            this.moveBagL.UseVisualStyleBackColor = true;
-            this.moveBagL.Click += new System.EventHandler(this.moveWindowL_Click);
-            // 
-            // bagContent_lbl
-            // 
-            this.bagContent_lbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.bagContent_lbl.Location = new System.Drawing.Point(176, 455);
-            this.bagContent_lbl.Name = "bagContent_lbl";
-            this.bagContent_lbl.Size = new System.Drawing.Size(612, 162);
-            this.bagContent_lbl.TabIndex = 16;
-            this.bagContent_lbl.Text = "label2";
-            // 
-            // currentBagPos
-            // 
-            this.currentBagPos.AutoSize = true;
-            this.currentBagPos.Location = new System.Drawing.Point(458, 433);
-            this.currentBagPos.Name = "currentBagPos";
-            this.currentBagPos.Size = new System.Drawing.Size(38, 15);
-            this.currentBagPos.TabIndex = 17;
-            this.currentBagPos.Text = "label4";
+            this.allDefinitions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.allDefinitions.FormattingEnabled = true;
+            this.allDefinitions.ItemHeight = 15;
+            this.allDefinitions.Location = new System.Drawing.Point(176, 429);
+            this.allDefinitions.Name = "allDefinitions";
+            this.allDefinitions.Size = new System.Drawing.Size(612, 319);
+            this.allDefinitions.TabIndex = 18;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 770);
-            this.Controls.Add(this.currentBagPos);
-            this.Controls.Add(this.bagContent_lbl);
-            this.Controls.Add(this.moveBagR);
-            this.Controls.Add(this.moveBagL);
+            this.ClientSize = new System.Drawing.Size(800, 763);
+            this.Controls.Add(this.allDefinitions);
             this.Controls.Add(this.showingText);
             this.Controls.Add(this.nextText);
             this.Controls.Add(this.prevText);
@@ -202,7 +170,7 @@ namespace TextAnalysis {
             this.Controls.Add(this.baseText);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.inputText);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.processText_btn);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -211,7 +179,7 @@ namespace TextAnalysis {
         }
 
         #endregion
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button processText_btn;
         private System.Windows.Forms.TextBox inputText;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label baseText;
@@ -222,10 +190,7 @@ namespace TextAnalysis {
         private System.Windows.Forms.Button prevText;
         private System.Windows.Forms.Button nextText;
         private System.Windows.Forms.Label showingText;
-        private System.Windows.Forms.Button moveBagR;
-        private System.Windows.Forms.Button moveBagL;
-        private System.Windows.Forms.Label bagContent_lbl;
-        private System.Windows.Forms.Label currentBagPos;
+        private System.Windows.Forms.ListBox allDefinitions;
     }
 }
 

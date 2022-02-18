@@ -5,15 +5,18 @@ using System.Text;
 namespace TextAnalysis {
     public class Text {
 
-        static List<Vector> vectors = new List<Vector>();
+        public static List<Vector> vectors = new List<Vector>();
 
         public string baseText { get; }
 
         public string normalisedText { get; set; }
         public List<int> vectorisedText { get; set; }
 
+
         int bagSize;
         public int bagPosition { get; set; }
+
+
 
         public Text(string input) {
 
@@ -71,8 +74,8 @@ namespace TextAnalysis {
             //loops through all the words from the input
             for (int i = 0; i < splitText.Length; i++) {
 
-                //gets the index of the current word
-                int index = InList(splitText[i]);
+                //gets the vectors index of the current word
+                int index = StringInVectorsList(splitText[i]);
 
                 //if the index was not found
                 if (index == -1) {
@@ -90,11 +93,22 @@ namespace TextAnalysis {
             }
         }
 
-        int InList(string toCheck) {
+        public static int StringInVectorsList(string toCheck) {
 
             for (int i = 0; i < vectors.Count; i++)
 
                 if (vectors[i].word == toCheck)
+
+                    return i;
+
+            return -1;
+        }
+
+        public static int TokenInVectorsList(int toCheck) {
+
+            for (int i = 0; i < vectors.Count; i++)
+
+                if (vectors[i].token == toCheck)
 
                     return i;
 
@@ -120,42 +134,20 @@ namespace TextAnalysis {
             return toOut;
         }
 
-        public List<Vector> GetVectors() {
-            return vectors;
-        }
 
+        public void GenerateDefinitions() {
 
+            bagPosition = 0;
 
-        public void UpdateBagPosition(int direction) {
-
-            //updates the bag position
-            bagPosition += direction;
-
-            //constrains the position to size of the vector list
-            if (bagPosition < 0)
-                bagPosition = 0;
-
-            else if (bagPosition > vectorisedText.Count - 1)
-                bagPosition = vectorisedText.Count - 1;
-
-            //no need to try chaning if there are no other vectors to change to
-            if (vectorisedText.Count > 1)
-
-                //checks if the current bagposition is on a full stop
-                if (VectorTokenToString(vectorisedText[bagPosition]) == ".")
-
-                    //keeps updating the position (doesn't go beyond the list bounds)
-                    if (bagPosition == 0)
-                        UpdateBagPosition(1);
-                    else if (bagPosition == vectorisedText.Count - 1)
-                        UpdateBagPosition(-1);
-                    else
-                        UpdateBagPosition(direction);
-
+            do
+                vectors[TokenInVectorsList(vectorisedText[bagPosition])].relatedVectors.Add(GetBagVectors());
+            while (IncrementBagPosition());
 
         }
 
-        public string GetBagVectors() {
+
+
+        public List<int> GetBagVectors() {
 
             //make sure that the text has been vectorised
             if (vectorisedText != null) {
@@ -171,19 +163,48 @@ namespace TextAnalysis {
                     end = vectorisedText.Count - 1;
 
 
-                string toReturn = "";
+                //stops the start from being behind a full stop
+                for (int i = bagPosition; i >= start; i--)
+                    if (VectorTokenToString(vectors[vectorisedText[i]].token) == ".")
+                        start = i + 1;
+
+                //stops the end from going past a full stop
+                for (int i = bagPosition; i <= end; i++)
+                    if (VectorTokenToString(vectors[vectorisedText[i]].token) == ".")
+                        end = i;
+
+
+                List<int> toReturn = new List<int>();
 
                 //loops through all the vectors in the bag
                 for (int i = start; i < end; i++)
 
-                    //constructs the string of the vector's token and word
-                    toReturn += "(" + vectors[vectorisedText[i]].token + ")" + vectors[vectorisedText[i]].word + " ";
+                    //stops the inclusion of the bag position in the definition
+                    if (i != bagPosition)
+
+                        //adds this vector to the list of defining vectors
+                        toReturn.Add(vectors[vectorisedText[i]].token);
 
                 return toReturn;
 
+            } else return null;
+        }
 
+        bool IncrementBagPosition() {
 
-            } else return "";
+            //updates the bag position
+            bagPosition++;
+
+            if (bagPosition > vectorisedText.Count - 1)
+                return false;
+
+            //checks if the current bagposition is on a full stop
+            if (VectorTokenToString(vectorisedText[bagPosition]) == ".")
+
+                //increments the bag position past the full stop
+                return IncrementBagPosition();
+
+            return true;
         }
     }
 
@@ -192,9 +213,12 @@ namespace TextAnalysis {
         public string word { get; set; }
         public int token { get; set; }
 
+        public List<List<int>> relatedVectors;
+
         public Vector(string input) {
             word = input;
             token = count++;
+            relatedVectors = new List<List<int>>();
         }
     }
 }
