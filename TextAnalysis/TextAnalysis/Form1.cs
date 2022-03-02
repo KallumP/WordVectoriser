@@ -13,12 +13,16 @@ namespace TextAnalysis {
 
         List<Text> texts;
         int currentTextToShow;
+        DBConnection dbCon;
 
         public Form1() {
             InitializeComponent();
 
             texts = new List<Text>();
 
+            string connectionString = Properties.Settings.Default.DictionaryConnStr;
+            dbCon = new DBConnection(connectionString);
+            dbCon.OpenConnection();
 
         }
 
