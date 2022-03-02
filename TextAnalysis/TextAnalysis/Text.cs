@@ -140,7 +140,7 @@ namespace TextAnalysis {
             bagPosition = 0;
 
             do
-                vectors[TokenInVectorsList(vectorisedText[bagPosition])].relatedVectors.Add(GetBagVectors());
+                vectors[TokenInVectorsList(vectorisedText[bagPosition])].definitions.Add(new Definition(GetBagVectors()));
             while (IncrementBagPosition());
 
         }
@@ -209,16 +209,46 @@ namespace TextAnalysis {
     }
 
     public class Vector {
-        static int count;
+        static int tokenGlobal;
         public string word { get; set; }
         public int token { get; set; }
 
-        public List<List<int>> relatedVectors;
+        public List<Definition> definitions;
 
         public Vector(string input) {
             word = input;
-            token = count++;
-            relatedVectors = new List<List<int>>();
+            token = tokenGlobal++;
+            definitions = new List<Definition>();
         }
+
+        public Vector(string input, int _token) {
+            word = input;
+            token = _token;
+            definitions = new List<Definition>();
+        }
+    }
+
+    public class Definition {
+
+        //need way of setting the largest id from the database when all defitions are found
+
+        public static int identifierGlobal;
+
+        public int identifier;
+        public List<int> relatedVectors;
+
+        public Definition(List<int> _relatedVectors) {
+
+            identifier =  identifierGlobal++;
+            relatedVectors = _relatedVectors;
+        }
+
+        public Definition(List<int> _relatedVectors, int _identifier) {
+
+            identifier = _identifier;
+            relatedVectors = _relatedVectors;
+        }
+
+
     }
 }

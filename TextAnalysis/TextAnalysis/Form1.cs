@@ -13,16 +13,16 @@ namespace TextAnalysis {
 
         List<Text> texts;
         int currentTextToShow;
-        DBConnection dbCon;
 
         public Form1() {
             InitializeComponent();
 
             texts = new List<Text>();
 
-            string connectionString = Properties.Settings.Default.DictionaryConnStr;
-            dbCon = new DBConnection(connectionString);
-            dbCon.OpenConnection();
+            //sets up the database helper class
+            DBManager.Setup(Properties.Settings.Default.DictionaryConnStr);
+
+            string result = DBManager.GetAllVectors();
 
         }
 
@@ -93,7 +93,7 @@ namespace TextAnalysis {
 
         void ShowAllDefinitions() {
 
-            allDefinitions.Items.Clear();  
+            allDefinitions.Items.Clear();
 
             List<int> outputtedVectors = new List<int>();
 
@@ -106,7 +106,7 @@ namespace TextAnalysis {
                 if (!outputtedVectors.Contains(currentVector)) {
 
                     //loops through all the definitions for this vector
-                    for (int j = 0; j < TextAnalysis.Text.vectors[TextAnalysis.Text.TokenInVectorsList(currentVector)].relatedVectors.Count(); j++) {
+                    for (int j = 0; j < TextAnalysis.Text.vectors[TextAnalysis.Text.TokenInVectorsList(currentVector)].definitions.Count(); j++) {
 
                         string toAdd = "";
 
@@ -116,9 +116,9 @@ namespace TextAnalysis {
                         toAdd += "Current Vector: (" + currentVectorToken + ")" + currentVectorWord + ". Definition: " + j + ". Related vectors: ";
 
                         //loops through all the vectors in this definition for this vector
-                        for (int k = 0; k < TextAnalysis.Text.vectors[TextAnalysis.Text.TokenInVectorsList(currentVector)].relatedVectors[j].Count(); k++) {
+                        for (int k = 0; k < TextAnalysis.Text.vectors[TextAnalysis.Text.TokenInVectorsList(currentVector)].definitions[j].relatedVectors.Count(); k++) {
 
-                            int definitionToken = TextAnalysis.Text.vectors[TextAnalysis.Text.TokenInVectorsList(currentVector)].relatedVectors[j][k];
+                            int definitionToken = TextAnalysis.Text.vectors[TextAnalysis.Text.TokenInVectorsList(currentVector)].definitions[j].relatedVectors[k];
                             string definitionString = TextAnalysis.Text.vectors[definitionToken].word;
 
                             toAdd += "( " + definitionToken + ")" + definitionString + ", ";
