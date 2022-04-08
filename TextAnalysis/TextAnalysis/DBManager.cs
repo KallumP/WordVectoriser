@@ -41,10 +41,10 @@ namespace TextAnalysis {
                 selectResult = ExecuteSelect(query);
 
                 //checks if there wasn't already this vector in the db
-                if (selectResult != null) {
+                if (selectResult == null) {
 
                     //insert vector where vector token does not exist (no duplicate vectors)
-                    query = "INSERT INTO Vector (token, string) VALUES (" + v.token.ToString() + "," + v.word + ");";
+                    query = "INSERT INTO Vector (token, string) VALUES (" + v.token.ToString() + ",'" + v.word + "');";
                     ExecuteInsert(query);
 
                 }
@@ -176,7 +176,7 @@ namespace TextAnalysis {
 
                     while (dr.Read())
 
-                        resultString += dr.GetValue(0) + "!";
+                        resultString += dr.GetValue(0) + "," +  dr.GetValue(1) + ";";
                 }
 
                 connectionToDB.Close();

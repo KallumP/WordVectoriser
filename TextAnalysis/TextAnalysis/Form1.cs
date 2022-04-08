@@ -22,41 +22,28 @@ namespace TextAnalysis {
             //sets up the database helper class
             DBManager.Setup(Properties.Settings.Default.DictionaryConnStr);
 
-            string result = DBManager.GetAllVectors();
-
+            OutputDBVecsToCLI();
         }
 
         private void processText_btn_Click(object sender, EventArgs e) {
 
-            //adds the text from the textbox into the list of all texts
-            texts.Add(new Text(inputText.Text));
+            ProcessText(inputText.Text);
 
-            //vectorises the new text
-            texts[texts.Count - 1].Vectorise();
-            texts[texts.Count - 1].GenerateDefinitions();
-            TextAnalysis.Text.UploadVectors();
 
+            //updates ui settings
             currentTextToShow = texts.Count - 1;
 
             prevText.Enabled = true;
             nextText.Enabled = true;
             inputText.Text = "";
 
-            ShowText();
-            ShowAllDefinitions();
-        }
 
+            //pushes vectors to the database
+            DBManager.InsertVectors(TextAnalysis.Text.vectors);
+            OutputDBVecsToCLI();
 
-        void OutputAllVectors() {
-
-            List<Vector> vectors = TextAnalysis.Text.vectors;
-
-            allVectors.Items.Clear();
-
-            foreach (Vector vector in vectors)
-
-                allVectors.Items.Add(vector.token + ": " + vector.word);
-
+            //output to window
+            UpdateUI();
         }
 
         private void prevText_Click(object sender, EventArgs e) {
@@ -64,7 +51,7 @@ namespace TextAnalysis {
             if (currentTextToShow > 0)
                 currentTextToShow--;
 
-            ShowText();
+            UpdateUI();
 
         }
 
@@ -73,7 +60,27 @@ namespace TextAnalysis {
             if (currentTextToShow < texts.Count - 1)
                 currentTextToShow++;
 
+            UpdateUI(); 
+        }
+
+
+        void ProcessText(string toProcess) {
+
+            //adds the text from the textbox into the list of all texts
+            texts.Add(new Text(toProcess));
+
+            //vectorises the new text
+            texts[texts.Count - 1].Vectorise();
+            texts[texts.Count - 1].GenerateDefinitions();
+            TextAnalysis.Text.UploadVectors();
+
+        }
+
+
+
+        void UpdateUI() {
             ShowText();
+            ShowAllDefinitions();
         }
 
         void ShowText() {
@@ -89,6 +96,18 @@ namespace TextAnalysis {
             OutputAllVectors();
 
             showingText.Text = "Showing text " + (currentTextToShow + 1) + ", out of " + texts.Count;
+
+        }
+
+        void OutputAllVectors() {
+
+            List<Vector> vectors = TextAnalysis.Text.vectors;
+
+            allVectors.Items.Clear();
+
+            foreach (Vector vector in vectors)
+
+                allVectors.Items.Add(vector.token + ": " + vector.word);
 
         }
 
@@ -133,6 +152,12 @@ namespace TextAnalysis {
 
             }
 
+        }
+
+        void OutputDBVecsToCLI() {
+            Console.Clear();
+            string result = DBManager.GetAllVectors();
+            Console.WriteLine(result);
         }
     }
 }
