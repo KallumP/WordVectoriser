@@ -206,6 +206,11 @@ namespace TextAnalysis {
 
             return true;
         }
+
+        public static void UploadVectors() {
+
+            DBManager.InsertVectors(vectors);
+        }
     }
 
     public class Vector {

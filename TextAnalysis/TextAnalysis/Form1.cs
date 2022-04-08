@@ -34,6 +34,7 @@ namespace TextAnalysis {
             //vectorises the new text
             texts[texts.Count - 1].Vectorise();
             texts[texts.Count - 1].GenerateDefinitions();
+            TextAnalysis.Text.UploadVectors();
 
             currentTextToShow = texts.Count - 1;
 
@@ -113,7 +114,7 @@ namespace TextAnalysis {
                         int currentVectorToken = TextAnalysis.Text.TokenInVectorsList(currentVector);
                         string currentVectorWord = TextAnalysis.Text.vectors[currentVectorToken].word;
 
-                        toAdd += "Current Vector: (" + currentVectorToken + ")" + currentVectorWord + ". Definition: " + j + ". Related vectors: ";
+                        toAdd += "Current Vector: (" + currentVectorToken + ")" + currentVectorWord + ". Definition: " + j + ", " + TextAnalysis.Text.vectors[TextAnalysis.Text.TokenInVectorsList(currentVector)].definitions[j].identifier + ". Related vectors: ";
 
                         //loops through all the vectors in this definition for this vector
                         for (int k = 0; k < TextAnalysis.Text.vectors[TextAnalysis.Text.TokenInVectorsList(currentVector)].definitions[j].relatedVectors.Count(); k++) {

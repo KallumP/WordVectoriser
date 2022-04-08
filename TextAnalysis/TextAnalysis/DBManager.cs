@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using Microsoft.Data.SqlClient;
+//using System.Data.SqlClient;
 
 namespace TextAnalysis {
     public static class DBManager {
@@ -70,7 +71,7 @@ namespace TextAnalysis {
                             ExecuteInsert(query);
                         }
                     }
-                }
+                } 
             }
         }
 
@@ -176,7 +177,6 @@ namespace TextAnalysis {
                     while (dr.Read())
 
                         resultString += dr.GetValue(0) + "!";
-
                 }
 
                 connectionToDB.Close();
