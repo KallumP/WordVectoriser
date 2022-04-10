@@ -29,11 +29,11 @@ namespace TextAnalysis {
 
         public static void InsertVectors(List<Vector> vectors) {
 
-            //loops through all the vectors
-            foreach (Vector v in vectors) {
+            string query;
+            string selectResult;
 
-                string query;
-                string selectResult;
+            //loops through all the vectors to upload vectors
+            foreach (Vector v in vectors) {
 
 
                 //query to pull this vector from the db
@@ -48,6 +48,10 @@ namespace TextAnalysis {
                     ExecuteQuery(query);
 
                 }
+            }
+
+            //loops through all the vectors to upload definitions
+            foreach (Vector v in vectors) {
 
                 //loops through each definition for this vector
                 foreach (Definition d in v.definitions) {
@@ -57,7 +61,7 @@ namespace TextAnalysis {
                     selectResult = ExecuteSelect(query);
 
                     //checks to see if this definition does not already exist
-                    if (selectResult != null) {
+                    if (selectResult == null) {
 
                         //inserts the definition
                         query = "INSERT INTO Definition (id, vectorLink) VALUES (" + d.identifier.ToString() + "," + v.token.ToString() + ");";
@@ -86,7 +90,7 @@ namespace TextAnalysis {
         public static string GetAllDefinitions(Vector v) {
 
             //selects all definitions for this vector
-            string query = "SELECT id FROM Definition WHERE (vectorLink = " + v.token.ToString() + ";";
+            string query = "SELECT id FROM Definition WHERE (vectorLink = " + v.token.ToString() + ");";
             string result = ExecuteMultipleSelect(query);
             return result;
         }
@@ -94,7 +98,7 @@ namespace TextAnalysis {
         public static string GetAllRelatedVectors(Definition d) {
 
             //selects all related vectors for this definition
-            string query = "SELECT relatedVector FROM Related WHERE (definitionID = " + d.identifier.ToString() + ";";
+            string query = "SELECT relatedVector FROM Related WHERE (definitionID = " + d.identifier.ToString() + ");";
             string result = ExecuteMultipleSelect(query);
             return result;
         }

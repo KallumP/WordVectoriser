@@ -23,6 +23,7 @@ namespace TextAnalysis {
             DBManager.Setup(Properties.Settings.Default.DictionaryConnStr);
 
             PullAllVectors();
+            PullAllDefinitions();
             OutputDBVecsToCLI();
         }
 
@@ -104,7 +105,6 @@ namespace TextAnalysis {
                     //splits all definition data into separate definition data
                     string[] definitionsRaw = result.Split(';');
 
-                    //make sure that the order in which the vector has its columns is correct after the loop change in multipleSelect method
 
                     //take the vector id from the definition
                     //add a new definition to the vector at that vecID index

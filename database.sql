@@ -12,11 +12,10 @@ CREATE TABLE Definition (
 );
 
 CREATE TABLE Related (
-    id int NOT NULL,
+    id int IDENTITY(1,1),
     definitionID int NOT NULL,
     relatedVector int NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT relatedToDefinition FOREIGN KEY (definitionID) REFERENCES Definition(id),
     CONSTRAINT relatedToVector FOREIGN KEY (relatedVector) REFERENCES Vector(token)
-
 );
