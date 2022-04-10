@@ -181,7 +181,7 @@ namespace TextAnalysis {
                 List<int> toReturn = new List<int>();
 
                 //loops through all the vectors in the bag
-                for (int i = start; i < end; i++)
+                for (int i = start; i <= end; i++)
 
                     //stops the inclusion of the bag position in the definition
                     if (i != bagPosition)
@@ -236,7 +236,7 @@ namespace TextAnalysis {
             definitions = new List<Definition>();
 
             //saves the largest identifier
-            if (token > tokenGlobal)
+            if (token >= tokenGlobal)
                 tokenGlobal = token + 1;
         }
     }
@@ -260,7 +260,7 @@ namespace TextAnalysis {
             relatedVectors = _relatedVectors;
 
             //saves the largest identifier
-            if (identifier > identifierGlobal)
+            if (identifier >= identifierGlobal)
                 identifierGlobal = identifier + 1;
         }
     }
