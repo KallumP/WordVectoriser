@@ -45,7 +45,7 @@ namespace TextAnalysis {
 
                     //insert vector where vector token does not exist (no duplicate vectors)
                     query = "INSERT INTO Vector (token, string) VALUES (" + v.token.ToString() + ",'" + v.word + "');";
-                    ExecuteInsert(query);
+                    ExecuteQuery(query);
 
                 }
 
@@ -61,14 +61,14 @@ namespace TextAnalysis {
 
                         //inserts the definition
                         query = "INSERT INTO Definition (id, vectorLink) VALUES (" + d.identifier.ToString() + "," + v.token.ToString() + ");";
-                        ExecuteInsert(query);
+                        ExecuteQuery(query);
 
                         //loops through all related vectors
                         foreach (int i in d.relatedVectors) {
 
                             //inserts all related vectors linked to definition
                             query = "INSERT INTO Related (definitionID, relatedVector) VALUES (" + d.identifier.ToString() + "," + i.ToString() + ");";
-                            ExecuteInsert(query);
+                            ExecuteQuery(query);
                         }
                     }
                 }
@@ -99,8 +99,15 @@ namespace TextAnalysis {
             return result;
         }
 
+        public static void DeleteAll() {
 
-        public static void ExecuteInsert(string query) {
+            string query = "DELETE FROM Related; DELETE FROM Definition; DELETE FROM Vector;";
+            ExecuteQuery(query);
+
+
+        }
+
+        public static void ExecuteQuery(string query) {
 
             //stops the database from being used more than once
             using (connectionToDB = new SqlConnection(connectionString)) {
@@ -191,6 +198,7 @@ namespace TextAnalysis {
                 return resultString;
             }
         }
+
 
 
 

@@ -212,5 +212,9 @@ namespace TextAnalysis {
             string result = DBManager.GetAllVectors();
             Console.WriteLine(result);
         }
+
+        private void resetDB_btn_Click(object sender, EventArgs e) {
+            DBManager.DeleteAll();
+        }
     }
 }
