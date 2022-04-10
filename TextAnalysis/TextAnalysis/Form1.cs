@@ -22,6 +22,7 @@ namespace TextAnalysis {
             //sets up the database helper class
             DBManager.Setup(Properties.Settings.Default.DictionaryConnStr);
 
+            PullAllVectors();
             OutputDBVecsToCLI();
         }
 
@@ -38,8 +39,7 @@ namespace TextAnalysis {
             inputText.Text = "";
 
 
-            //pushes vectors to the database
-            DBManager.InsertVectors(TextAnalysis.Text.vectors);
+            PushAllVectors();
             OutputDBVecsToCLI();
 
             //output to window
@@ -60,23 +60,76 @@ namespace TextAnalysis {
             if (currentTextToShow < texts.Count - 1)
                 currentTextToShow++;
 
-            UpdateUI(); 
+            UpdateUI();
         }
 
+
+        void PullAllVectors() {
+
+            //gets all the vector data from the database
+            string result = DBManager.GetAllVectors();
+
+            if (result != null) {
+
+                //splits all vector data into the separate vector data
+                string[] vectorsRaw = result.Split(';');
+
+                //loops through all the vector data
+                for (int i = 0; i < vectorsRaw.Length; i++) {
+
+                    if (vectorsRaw[i] != "") {
+
+                        string vectorToken = vectorsRaw[i].Split(',')[0];
+                        string vectorText = vectorsRaw[i].Split(',')[1];
+
+                        //pushes this as a new vector with a known token
+                        TextAnalysis.Text.vectors.Add(new Vector(vectorText, Int16.Parse( vectorToken)));
+                    }
+                }
+
+                OutputAllVectors();
+            }
+        }
+
+        void PullAllDefinitions() {
+
+            //loops through all the vectors
+            for (int i = 0; i < TextAnalysis.Text.vectors.Count; i++) {
+
+                //gets all the definition data for this vector
+                string result = DBManager.GetAllDefinitions(TextAnalysis.Text.vectors[i]);
+
+                if (result != null) {
+
+                    //splits all definition data into separate definition data
+                    string[] definitionsRaw = result.Split(';');
+
+                    //make sure that the order in which the vector has its columns is correct after the loop change in multipleSelect method
+
+                    //take the vector id from the definition
+                    //add a new definition to the vector at that vecID index
+                }
+            }
+        }
+
+
+
+        void PushAllVectors() {
+            //pushes vectors to the database
+            DBManager.InsertVectors(TextAnalysis.Text.vectors);
+        }
 
         void ProcessText(string toProcess) {
 
             //adds the text from the textbox into the list of all texts
             texts.Add(new Text(toProcess));
 
-            //vectorises the new text
+            //vectorises and defines the new text
             texts[texts.Count - 1].Vectorise();
             texts[texts.Count - 1].GenerateDefinitions();
             TextAnalysis.Text.UploadVectors();
 
         }
-
-
 
         void UpdateUI() {
             ShowText();
@@ -117,28 +170,28 @@ namespace TextAnalysis {
 
             List<int> outputtedVectors = new List<int>();
 
-            //loops through all the vectors in the vectorised text
+            //loops through all the vector tokens in the vectorised text
             for (int i = 0; i < texts[currentTextToShow].vectorisedText.Count; i++) {
 
-                int currentVector = texts[currentTextToShow].vectorisedText[i];
+                int currentVectorToken = texts[currentTextToShow].vectorisedText[i];
+                int currentVectorIndex = TextAnalysis.Text.IndexOfVectorToken(currentVectorToken);
 
                 //only outputs this vectors definitions if it hasn't already been outputted
-                if (!outputtedVectors.Contains(currentVector)) {
+                if (!outputtedVectors.Contains(currentVectorToken)) {
 
                     //loops through all the definitions for this vector
-                    for (int j = 0; j < TextAnalysis.Text.vectors[TextAnalysis.Text.TokenInVectorsList(currentVector)].definitions.Count(); j++) {
+                    for (int j = 0; j < TextAnalysis.Text.vectors[currentVectorIndex].definitions.Count(); j++) {
 
                         string toAdd = "";
 
-                        int currentVectorToken = TextAnalysis.Text.TokenInVectorsList(currentVector);
-                        string currentVectorWord = TextAnalysis.Text.vectors[currentVectorToken].word;
+                        string currentVectorWord = TextAnalysis.Text.vectors[currentVectorIndex].word;
 
-                        toAdd += "Current Vector: (" + currentVectorToken + ")" + currentVectorWord + ". Definition: " + j + ", " + TextAnalysis.Text.vectors[TextAnalysis.Text.TokenInVectorsList(currentVector)].definitions[j].identifier + ". Related vectors: ";
+                        toAdd += "Current Vector: (" + currentVectorIndex + ")" + currentVectorWord + ". Definition: " + j + ", " + TextAnalysis.Text.vectors[currentVectorIndex].definitions[j].identifier + ". Related vectors: ";
 
                         //loops through all the vectors in this definition for this vector
-                        for (int k = 0; k < TextAnalysis.Text.vectors[TextAnalysis.Text.TokenInVectorsList(currentVector)].definitions[j].relatedVectors.Count(); k++) {
+                        for (int k = 0; k < TextAnalysis.Text.vectors[currentVectorIndex].definitions[j].relatedVectors.Count(); k++) {
 
-                            int definitionToken = TextAnalysis.Text.vectors[TextAnalysis.Text.TokenInVectorsList(currentVector)].definitions[j].relatedVectors[k];
+                            int definitionToken = TextAnalysis.Text.vectors[currentVectorIndex].definitions[j].relatedVectors[k];
                             string definitionString = TextAnalysis.Text.vectors[definitionToken].word;
 
                             toAdd += "( " + definitionToken + ")" + definitionString + ", ";
@@ -147,7 +200,7 @@ namespace TextAnalysis {
                         allDefinitions.Items.Add(toAdd);
                     }
 
-                    outputtedVectors.Add(currentVector);
+                    outputtedVectors.Add(currentVectorToken);
                 }
 
             }

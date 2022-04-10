@@ -71,7 +71,7 @@ namespace TextAnalysis {
                             ExecuteInsert(query);
                         }
                     }
-                } 
+                }
             }
         }
 
@@ -174,9 +174,15 @@ namespace TextAnalysis {
                 //makes sure that a row was found
                 if (dr.HasRows) {
 
-                    while (dr.Read())
+                    while (dr.Read()) {
 
-                        resultString += dr.GetValue(0) + "," +  dr.GetValue(1) + ";";
+                        //loops through all the values in this column
+                        for (int i = 0; i < dr.FieldCount; i++)
+                            resultString += dr.GetValue(i) + ",";
+
+                        //end of this value
+                        resultString += ";";
+                    }
                 }
 
                 connectionToDB.Close();

@@ -104,14 +104,18 @@ namespace TextAnalysis {
             return -1;
         }
 
-        public static int TokenInVectorsList(int toCheck) {
+        public static int IndexOfVectorToken(int tokenToCheck) {
 
+            //loops through all vectors
             for (int i = 0; i < vectors.Count; i++)
 
-                if (vectors[i].token == toCheck)
+                //checks if the currect vector token is the same as the token to check
+                if (vectors[i].token == tokenToCheck)
 
+                    //returns this index
                     return i;
 
+            //returns null
             return -1;
         }
 
@@ -140,7 +144,7 @@ namespace TextAnalysis {
             bagPosition = 0;
 
             do
-                vectors[TokenInVectorsList(vectorisedText[bagPosition])].definitions.Add(new Definition(GetBagVectors()));
+                vectors[IndexOfVectorToken(vectorisedText[bagPosition])].definitions.Add(new Definition(GetBagVectors()));
             while (IncrementBagPosition());
 
         }
@@ -230,6 +234,10 @@ namespace TextAnalysis {
             word = input;
             token = _token;
             definitions = new List<Definition>();
+
+            //saves the largest identifier
+            if (token > tokenGlobal)
+                tokenGlobal = token;
         }
     }
 
@@ -252,8 +260,10 @@ namespace TextAnalysis {
 
             identifier = _identifier;
             relatedVectors = _relatedVectors;
+
+            //saves the largest identifier
+            if (identifier > identifierGlobal)
+                identifierGlobal = identifier;
         }
-
-
     }
 }
