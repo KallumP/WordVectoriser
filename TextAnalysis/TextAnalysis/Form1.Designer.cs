@@ -36,6 +36,7 @@ namespace TextAnalysis {
             this.nextText = new System.Windows.Forms.Button();
             this.showingText = new System.Windows.Forms.Label();
             this.allDefinitions = new System.Windows.Forms.ListBox();
+            this.resetDB_btn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // processText_btn
@@ -114,7 +115,7 @@ namespace TextAnalysis {
             // prevText
             // 
             this.prevText.Enabled = false;
-            this.prevText.Location = new System.Drawing.Point(454, 11);
+            this.prevText.Location = new System.Drawing.Point(401, 11);
             this.prevText.Name = "prevText";
             this.prevText.Size = new System.Drawing.Size(75, 23);
             this.prevText.TabIndex = 11;
@@ -125,7 +126,7 @@ namespace TextAnalysis {
             // nextText
             // 
             this.nextText.Enabled = false;
-            this.nextText.Location = new System.Drawing.Point(535, 11);
+            this.nextText.Location = new System.Drawing.Point(482, 11);
             this.nextText.Name = "nextText";
             this.nextText.Size = new System.Drawing.Size(75, 23);
             this.nextText.TabIndex = 12;
@@ -136,7 +137,7 @@ namespace TextAnalysis {
             // showingText
             // 
             this.showingText.AutoSize = true;
-            this.showingText.Location = new System.Drawing.Point(616, 12);
+            this.showingText.Location = new System.Drawing.Point(563, 12);
             this.showingText.Name = "showingText";
             this.showingText.Size = new System.Drawing.Size(96, 15);
             this.showingText.TabIndex = 13;
@@ -154,11 +155,23 @@ namespace TextAnalysis {
             this.allDefinitions.Size = new System.Drawing.Size(612, 319);
             this.allDefinitions.TabIndex = 18;
             // 
+            // resetDB_btn
+            // 
+            this.resetDB_btn.BackColor = System.Drawing.Color.Red;
+            this.resetDB_btn.Location = new System.Drawing.Point(713, 11);
+            this.resetDB_btn.Name = "resetDB_btn";
+            this.resetDB_btn.Size = new System.Drawing.Size(75, 23);
+            this.resetDB_btn.TabIndex = 19;
+            this.resetDB_btn.Text = "Reset DB";
+            this.resetDB_btn.UseVisualStyleBackColor = false;
+            this.resetDB_btn.Click += new System.EventHandler(this.resetDB_btn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 763);
+            this.Controls.Add(this.resetDB_btn);
             this.Controls.Add(this.allDefinitions);
             this.Controls.Add(this.showingText);
             this.Controls.Add(this.nextText);
@@ -191,6 +204,7 @@ namespace TextAnalysis {
         private System.Windows.Forms.Button nextText;
         private System.Windows.Forms.Label showingText;
         private System.Windows.Forms.ListBox allDefinitions;
+        private System.Windows.Forms.Button resetDB_btn;
     }
 }
 

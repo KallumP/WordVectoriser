@@ -104,14 +104,18 @@ namespace TextAnalysis {
             return -1;
         }
 
-        public static int TokenInVectorsList(int toCheck) {
+        public static int IndexOfVectorToken(int tokenToCheck) {
 
+            //loops through all vectors
             for (int i = 0; i < vectors.Count; i++)
 
-                if (vectors[i].token == toCheck)
+                //checks if the currect vector token is the same as the token to check
+                if (vectors[i].token == tokenToCheck)
 
+                    //returns this index
                     return i;
 
+            //returns null
             return -1;
         }
 
@@ -140,7 +144,7 @@ namespace TextAnalysis {
             bagPosition = 0;
 
             do
-                vectors[TokenInVectorsList(vectorisedText[bagPosition])].relatedVectors.Add(GetBagVectors());
+                vectors[IndexOfVectorToken(vectorisedText[bagPosition])].definitions.Add(new Definition(GetBagVectors()));
             while (IncrementBagPosition());
 
         }
@@ -177,7 +181,7 @@ namespace TextAnalysis {
                 List<int> toReturn = new List<int>();
 
                 //loops through all the vectors in the bag
-                for (int i = start; i < end; i++)
+                for (int i = start; i <= end; i++)
 
                     //stops the inclusion of the bag position in the definition
                     if (i != bagPosition)
@@ -206,19 +210,58 @@ namespace TextAnalysis {
 
             return true;
         }
+
+        public static void UploadVectors() {
+
+            DBManager.InsertVectorsAndDefinitions(vectors);
+        }
     }
 
     public class Vector {
-        static int count;
+        static int tokenGlobal;
         public string word { get; set; }
         public int token { get; set; }
 
-        public List<List<int>> relatedVectors;
+        public List<Definition> definitions;
 
         public Vector(string input) {
             word = input;
-            token = count++;
-            relatedVectors = new List<List<int>>();
+            token = tokenGlobal++;
+            definitions = new List<Definition>();
+        }
+
+        public Vector(string input, int _token) {
+            word = input;
+            token = _token;
+            definitions = new List<Definition>();
+
+            //saves the largest identifier
+            if (token >= tokenGlobal)
+                tokenGlobal = token + 1;
+        }
+    }
+
+    public class Definition {
+
+        public static int identifierGlobal;
+
+        public int identifier;
+        public List<int> relatedVectors;
+
+        public Definition(List<int> _relatedVectors) {
+
+            identifier =  identifierGlobal++;
+            relatedVectors = _relatedVectors;
+        }
+
+        public Definition(List<int> _relatedVectors, int _identifier) {
+
+            identifier = _identifier;
+            relatedVectors = _relatedVectors;
+
+            //saves the largest identifier
+            if (identifier >= identifierGlobal)
+                identifierGlobal = identifier + 1;
         }
     }
 }
