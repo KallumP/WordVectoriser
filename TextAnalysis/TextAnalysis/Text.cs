@@ -213,7 +213,7 @@ namespace TextAnalysis {
 
         public static void UploadVectors() {
 
-            DBManager.InsertVectors(vectors);
+            DBManager.InsertVectorsAndDefinitions(vectors);
         }
     }
 
@@ -237,13 +237,11 @@ namespace TextAnalysis {
 
             //saves the largest identifier
             if (token > tokenGlobal)
-                tokenGlobal = token;
+                tokenGlobal = token + 1;
         }
     }
 
     public class Definition {
-
-        //need way of setting the largest id from the database when all defitions are found
 
         public static int identifierGlobal;
 
@@ -263,7 +261,7 @@ namespace TextAnalysis {
 
             //saves the largest identifier
             if (identifier > identifierGlobal)
-                identifierGlobal = identifier;
+                identifierGlobal = identifier + 1;
         }
     }
 }

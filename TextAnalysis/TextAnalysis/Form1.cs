@@ -84,7 +84,7 @@ namespace TextAnalysis {
                         string vectorText = vectorsRaw[i].Split(',')[1];
 
                         //pushes this as a new vector with a known token
-                        TextAnalysis.Text.vectors.Add(new Vector(vectorText, Int16.Parse( vectorToken)));
+                        TextAnalysis.Text.vectors.Add(new Vector(vectorText, Int16.Parse(vectorToken)));
                     }
                 }
 
@@ -103,11 +103,35 @@ namespace TextAnalysis {
                 if (result != null) {
 
                     //splits all definition data into separate definition data
-                    string[] definitionsRaw = result.Split(';');
+                    string[] definitionsSingles = result.Split(';');
 
+                    //loops through all the pulled definitions
+                    for (int j = 0; j < definitionsSingles.Length; j++) {
 
-                    //take the vector id from the definition
-                    //add a new definition to the vector at that vecID index
+                        //makes sure this string is not empty
+                        if (definitionsSingles[j] != "") {
+
+                            //a list to store all related vectors
+                            List<int> related = new List<int>();
+
+                            //pulls all related vector data
+                            string relatedResult = DBManager.GetAllRelatedVectors(definitionsSingles[j]);
+
+                            //splits the related vector data into separate vector data
+                            string[] relatedSingles = relatedResult.Split(';');
+
+                            //adds each related vector into the list
+                            for (int k = 0; k < relatedSingles.Length; k++)
+
+                                //makes sure this string is not empty
+                                if (relatedSingles[k] != "")
+
+                                    related.Add(Int16.Parse(relatedSingles[k]));
+
+                            //adds the definition into this vector
+                            TextAnalysis.Text.vectors[i].definitions.Add(new Definition(related, Int16.Parse(definitionsSingles[j])));
+                        }
+                    }
                 }
             }
         }
@@ -116,7 +140,7 @@ namespace TextAnalysis {
 
         void PushAllVectors() {
             //pushes vectors to the database
-            DBManager.InsertVectors(TextAnalysis.Text.vectors);
+            DBManager.InsertVectorsAndDefinitions(TextAnalysis.Text.vectors);
         }
 
         void ProcessText(string toProcess) {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using Microsoft.Data.SqlClient;
-//using System.Data.SqlClient;
 
 namespace TextAnalysis {
     public static class DBManager {
@@ -15,19 +14,7 @@ namespace TextAnalysis {
             connectionString = _connectionString;
         }
 
-        public static void OpenConnection() {
-
-            //open the connection
-            connectionToDB.Open();
-        }
-
-        public static void CloseConnection() {
-
-            connectionToDB.Close();
-        }
-
-
-        public static void InsertVectors(List<Vector> vectors) {
+        public static void InsertVectorsAndDefinitions(List<Vector> vectors) {
 
             string query;
             string selectResult;
@@ -95,20 +82,19 @@ namespace TextAnalysis {
             return result;
         }
 
-        public static string GetAllRelatedVectors(Definition d) {
+        public static string GetAllRelatedVectors(string definitionIdentifier) {
 
             //selects all related vectors for this definition
-            string query = "SELECT relatedVector FROM Related WHERE (definitionID = " + d.identifier.ToString() + ");";
+            string query = "SELECT relatedVector FROM Related WHERE (definitionID = " + definitionIdentifier + ");";
             string result = ExecuteMultipleSelect(query);
             return result;
         }
 
         public static void DeleteAll() {
 
+            //deletes everything from all tables
             string query = "DELETE FROM Related; DELETE FROM Definition; DELETE FROM Vector;";
             ExecuteQuery(query);
-
-
         }
 
         public static void ExecuteQuery(string query) {
@@ -122,7 +108,6 @@ namespace TextAnalysis {
 
                 //opens the connection to the database
                 connectionToDB.Open();
-                //OpenConnection();
 
                 //executes the command
                 command.ExecuteNonQuery();
@@ -130,7 +115,6 @@ namespace TextAnalysis {
 
                 //closes the execution
                 connectionToDB.Close();
-                //CloseConnection();
             }
         }
 
@@ -142,7 +126,6 @@ namespace TextAnalysis {
                 SqlCommand command = new SqlCommand(query, connectionToDB);
 
                 connectionToDB.Open();
-                //OpenConnection();
 
                 //string result = Convert.ToString(POST.ExecuteNonQuery());
                 SqlDataReader dr = command.ExecuteReader();
@@ -160,7 +143,6 @@ namespace TextAnalysis {
                 }
 
                 connectionToDB.Close();
-                //CloseConnection();
 
                 return resultString;
             }
@@ -174,7 +156,6 @@ namespace TextAnalysis {
                 SqlCommand command = new SqlCommand(query, connectionToDB);
 
                 connectionToDB.Open();
-                //OpenConnection();
 
                 //string result = Convert.ToString(POST.ExecuteNonQuery());
                 SqlDataReader dr = command.ExecuteReader();
@@ -188,8 +169,14 @@ namespace TextAnalysis {
                     while (dr.Read()) {
 
                         //loops through all the values in this column
-                        for (int i = 0; i < dr.FieldCount; i++)
-                            resultString += dr.GetValue(i) + ",";
+                        for (int i = 0; i < dr.FieldCount; i++) {
+
+                            resultString += dr.GetValue(i);
+
+                            //adds on a comma if this isn't the last value
+                            if (i != dr.FieldCount - 1)
+                                resultString += ",";
+                        }
 
                         //end of this value
                         resultString += ";";
@@ -197,31 +184,9 @@ namespace TextAnalysis {
                 }
 
                 connectionToDB.Close();
-                //CloseConnection();
 
                 return resultString;
             }
         }
-
-
-
-
-        //public static DataSet GetDataSet(string sqlStatement) {
-
-        //    DataSet dataSet;
-
-        //    // create the object dataAdapter to manipulate a table from the database specified by connectionToDB
-        //    dataAdapter = new SqlDataAdapter(sqlStatement, connectionToDB);
-
-        //    // create the dataset
-        //    dataSet = new DataSet();
-
-        //    dataAdapter.Fill(dataSet);
-
-        //    //return the dataSet
-        //    return dataSet;
-        //}
-
-
     }
 }
