@@ -240,5 +240,21 @@ namespace TextAnalysis {
         private void resetDB_btn_Click(object sender, EventArgs e) {
             DBManager.DeleteAll();
         }
+
+        private void visualise_btn_Click(object sender, EventArgs e) {
+
+            //checks if there were any vectors
+            if (TextAnalysis.Text.vectors.Count > 0) {
+
+                int selected = allVectors.SelectedIndex;
+                Visualisation w = new Visualisation(selected);
+                w.Show();
+            } else {
+
+
+                //error saying that there are no vectors to visualise
+                MessageBox.Show("There are no vectors to visualise", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
