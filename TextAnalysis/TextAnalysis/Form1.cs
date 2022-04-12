@@ -247,17 +247,18 @@ namespace TextAnalysis {
 
         private void visualise_btn_Click(object sender, EventArgs e) {
 
-            //checks if there were any vectors
-            if (TextAnalysis.Text.vectors.Count > 0) {
+            int selected = allVectors.SelectedIndex;
 
-                int selected = allVectors.SelectedIndex;
+            //checks if there were any vectors
+            if (selected != -1) {
+
                 Visualisation w = new Visualisation(selected);
                 w.Show();
+ 
             } else {
 
-
                 //error saying that there are no vectors to visualise
-                MessageBox.Show("There are no vectors to visualise", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please select a vector from the list first", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
