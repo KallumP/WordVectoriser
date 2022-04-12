@@ -37,6 +37,7 @@ namespace TextAnalysis {
             this.showingText = new System.Windows.Forms.Label();
             this.allDefinitions = new System.Windows.Forms.ListBox();
             this.resetDB_btn = new System.Windows.Forms.Button();
+            this.visualise_btn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // processText_btn
@@ -91,7 +92,7 @@ namespace TextAnalysis {
             this.allVectors.ItemHeight = 15;
             this.allVectors.Location = new System.Drawing.Point(13, 249);
             this.allVectors.Name = "allVectors";
-            this.allVectors.Size = new System.Drawing.Size(157, 499);
+            this.allVectors.Size = new System.Drawing.Size(157, 469);
             this.allVectors.TabIndex = 8;
             // 
             // label2
@@ -166,11 +167,22 @@ namespace TextAnalysis {
             this.resetDB_btn.UseVisualStyleBackColor = false;
             this.resetDB_btn.Click += new System.EventHandler(this.resetDB_btn_Click);
             // 
+            // visualise_btn
+            // 
+            this.visualise_btn.Location = new System.Drawing.Point(12, 720);
+            this.visualise_btn.Name = "visualise_btn";
+            this.visualise_btn.Size = new System.Drawing.Size(158, 28);
+            this.visualise_btn.TabIndex = 20;
+            this.visualise_btn.Text = "Visualisation";
+            this.visualise_btn.UseVisualStyleBackColor = true;
+            this.visualise_btn.Click += new System.EventHandler(this.visualise_btn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 763);
+            this.Controls.Add(this.visualise_btn);
             this.Controls.Add(this.resetDB_btn);
             this.Controls.Add(this.allDefinitions);
             this.Controls.Add(this.showingText);
@@ -205,6 +217,7 @@ namespace TextAnalysis {
         private System.Windows.Forms.Label showingText;
         private System.Windows.Forms.ListBox allDefinitions;
         private System.Windows.Forms.Button resetDB_btn;
+        private System.Windows.Forms.Button visualise_btn;
     }
 }
 

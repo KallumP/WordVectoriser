@@ -244,5 +244,22 @@ namespace TextAnalysis {
         private void resetDB_btn_Click(object sender, EventArgs e) {
             DBManager.DeleteAll();
         }
+
+        private void visualise_btn_Click(object sender, EventArgs e) {
+
+            int selected = allVectors.SelectedIndex;
+
+            //checks if there were any vectors
+            if (selected != -1) {
+
+                Visualisation w = new Visualisation(selected);
+                w.Show();
+ 
+            } else {
+
+                //error saying that there are no vectors to visualise
+                MessageBox.Show("Please select a vector from the list first", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
