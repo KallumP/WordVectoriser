@@ -24,6 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             this.currentVector_lbl = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // currentVector_lbl
@@ -35,15 +36,27 @@
             this.currentVector_lbl.TabIndex = 0;
             this.currentVector_lbl.Text = "Current vector";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(531, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 15);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "label1";
+            // 
             // Visualisation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.currentVector_lbl);
+            this.DoubleBuffered = true;
             this.Name = "Visualisation";
             this.Text = "Visualisation";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Visualisation_Paint);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Visualisation_MouseMove);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -52,5 +65,6 @@
         #endregion
 
         private System.Windows.Forms.Label currentVector_lbl;
+        private System.Windows.Forms.Label label1;
     }
 }
