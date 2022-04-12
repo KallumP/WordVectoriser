@@ -117,16 +117,20 @@ namespace TextAnalysis {
                             //pulls all related vector data
                             string relatedResult = DBManager.GetAllRelatedVectors(definitionsSingles[j]);
 
-                            //splits the related vector data into separate vector data
-                            string[] relatedSingles = relatedResult.Split(';');
+                            if (relatedResult != "" && relatedResult != null) {
 
-                            //adds each related vector into the list
-                            for (int k = 0; k < relatedSingles.Length; k++)
+                                //splits the related vector data into separate vector data
+                                string[] relatedSingles = relatedResult.Split(';');
 
-                                //makes sure this string is not empty
-                                if (relatedSingles[k] != "")
+                                //adds each related vector into the list
+                                for (int k = 0; k < relatedSingles.Length; k++)
 
-                                    related.Add(Int16.Parse(relatedSingles[k]));
+                                    //makes sure this string is not empty
+                                    if (relatedSingles[k] != "")
+
+                                        related.Add(Int16.Parse(relatedSingles[k]));
+
+                            }
 
                             //adds the definition into this vector
                             TextAnalysis.Text.vectors[i].definitions.Add(new Definition(related, Int16.Parse(definitionsSingles[j])));
@@ -210,7 +214,7 @@ namespace TextAnalysis {
 
                         string currentVectorWord = TextAnalysis.Text.vectors[currentVectorIndex].word;
 
-                        toAdd += "Current Vector: (" + currentVectorIndex + ")" + currentVectorWord + ". Definition: " + j + ", " + TextAnalysis.Text.vectors[currentVectorIndex].definitions[j].identifier + ". Related vectors: ";
+                        toAdd += "Current Vector: (" + currentVectorIndex + ")" + currentVectorWord + ". Definition: " + TextAnalysis.Text.vectors[currentVectorIndex].definitions[j].identifier + ". Related vectors: ";
 
                         //loops through all the vectors in this definition for this vector
                         for (int k = 0; k < TextAnalysis.Text.vectors[currentVectorIndex].definitions[j].relatedVectors.Count(); k++) {
