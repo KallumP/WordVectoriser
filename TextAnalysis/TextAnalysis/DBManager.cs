@@ -31,8 +31,8 @@ namespace TextAnalysis {
                 if (selectResult == null) {
 
                     //insert vector where vector token does not exist (no duplicate vectors)
-                    query = "INSERT INTO Vector (token, string) VALUES (" + v.token.ToString() + ",'" + v.word + "');";
-                    ExecuteQuery(query);
+                    query = "INSERT INTO Vector (token, string) VALUES (" + v.token.ToString() + ",@param);";
+                    ExecuteQuery(query, v.word);
 
                 }
             }
@@ -52,14 +52,14 @@ namespace TextAnalysis {
 
                         //inserts the definition
                         query = "INSERT INTO Definition (id, vectorLink) VALUES (" + d.identifier.ToString() + "," + v.token.ToString() + ");";
-                        ExecuteQuery(query);
+                        ExecuteQuery(query, "");
 
                         //loops through all related vectors
                         foreach (int i in d.relatedVectors) {
 
                             //inserts all related vectors linked to definition
                             query = "INSERT INTO Related (definitionID, relatedVector) VALUES (" + d.identifier.ToString() + "," + i.ToString() + ");";
-                            ExecuteQuery(query);
+                            ExecuteQuery(query, "");
                         }
                     }
                 }
@@ -94,10 +94,10 @@ namespace TextAnalysis {
 
             //deletes everything from all tables
             string query = "DELETE FROM Related; DELETE FROM Definition; DELETE FROM Vector;";
-            ExecuteQuery(query);
+            ExecuteQuery(query, "");
         }
 
-        public static void ExecuteQuery(string query) {
+        public static void ExecuteQuery(string query, string param) {
 
             //stops the database from being used more than once
             using (connectionToDB = new SqlConnection(connectionString)) {
@@ -105,6 +105,8 @@ namespace TextAnalysis {
                 //sets up the sql command with the query string, and the database to apply the command to
                 SqlCommand command = new SqlCommand(query, connectionToDB);
 
+                if (param != "") 
+                    command.Parameters.AddWithValue("@param", param);
 
                 //opens the connection to the database
                 connectionToDB.Open();

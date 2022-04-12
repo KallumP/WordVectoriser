@@ -54,7 +54,7 @@ namespace TextAnalysis {
             this.inputText.Location = new System.Drawing.Point(176, 12);
             this.inputText.Name = "inputText";
             this.inputText.Size = new System.Drawing.Size(209, 23);
-            this.inputText.TabIndex = 4;
+            this.inputText.TabIndex = 0;
             // 
             // label1
             // 
